@@ -135,7 +135,7 @@ public class Bodega_Ctrl {
         }
         return resp;
     }
-    public boolean guar(int codipi, int codip, int cantidad,String fecha)
+    public boolean guar(int codipi, int codip, int cantidad,Date fecha)
     {
         boolean resp = false;
         try
@@ -171,7 +171,7 @@ public class Bodega_Ctrl {
         }
         return resp;
     }
-     public boolean modi(int codipi, int codip, int cantidad, String fecha,int codigo)
+     public boolean modi(int codipi, int codip, int cantidad, Date fecha,int codigo)
     {
         boolean resp = false;
         try

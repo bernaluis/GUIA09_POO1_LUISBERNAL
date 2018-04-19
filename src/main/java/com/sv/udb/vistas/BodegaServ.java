@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.sv.udb.controlador.Bodega_Ctrl;
 import com.sv.udb.modelo.Bodega;
+import java.util.Date;
 /**
  *
  * @author vergo_000
@@ -34,27 +35,36 @@ public class BodegaServ extends HttpServlet {
             throws ServletException, IOException {
          boolean esValido = request.getMethod().equals("POST");
         String mens = "";
+        boolean resp=false;
         if (!esValido) {
             response.sendRedirect(request.getContextPath() + "/index.jsp");
         } else {
             String CRUD = request.getParameter("btonBodega");
+            Date fecha=new Date();
             if (CRUD.equals("Guardar")) {
-                if (new Bodega_Ctrl().guar(Integer.parseInt(request.getParameter("selPiezas")), Integer.parseInt(request.getParameter("selProveedores")), Integer.parseInt(request.getParameter("cant")), String.valueOf(request.getParameter("fecha")))) {
+                 
+                if (new Bodega_Ctrl().guar(Integer.parseInt(request.getParameter("selPiezas")), Integer.parseInt(request.getParameter("selProveedores")), Integer.parseInt(request.getParameter("cant")), fecha)) {
                     mens = "Datos guardados";
+                    resp=true;
                 } else {
                     mens = "Error al guardar";
+                    resp=false;
                 }
             } else if (CRUD.equals("Modificar")) {
-                if (new Bodega_Ctrl().modi( Integer.parseInt(request.getParameter("selPiezas")), Integer.parseInt(request.getParameter("selProveedores")), Integer.parseInt(request.getParameter("cant")), String.valueOf(request.getParameter("fecha")),Integer.parseInt(request.getParameter("codi").trim()))) {
+                if (new Bodega_Ctrl().modi( Integer.parseInt(request.getParameter("selPiezas")), Integer.parseInt(request.getParameter("selProveedores")), Integer.parseInt(request.getParameter("cant")), fecha,Integer.parseInt(request.getParameter("codi").trim()))) {
                     mens = "Datos Modificados";
+                    resp=true;
                 } else {
                     mens = "Error al modificar";
+                    resp=false;
                 }
             } else if (CRUD.equals("Eliminar")) {
                 if (new Bodega_Ctrl().del(Integer.parseInt(request.getParameter("codi")))) {
                     mens = "Datos Eliminados";
+                    resp=true;
                 } else {
                     mens = "Error al eliminados";
+                    resp=false;
                 }
             } else if (CRUD.equals("Consultar")) {
                 int codi = Integer.parseInt(request.getParameter("codiBRadi") == null ? "-1"
@@ -69,9 +79,11 @@ public class BodegaServ extends HttpServlet {
                     request.setAttribute("cant", obje.getCantidad());
                     request.setAttribute("fecha", obje.getFecha());
                     mens = "Información consultada";
+                    resp=true;
                     request.setAttribute("estaModi", "true"); //Esta modificando
                 } else {
                     mens = "Error al consultar";
+                    resp=false;
                 }
             }
             request.setAttribute("mensAler", mens);

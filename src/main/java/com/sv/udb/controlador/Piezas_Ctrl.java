@@ -29,7 +29,7 @@ public class Piezas_Ctrl {
        List<Piezas> resp = new ArrayList<>();
         try
         {
-            PreparedStatement cmd = this.conn.prepareStatement("SELECT `codi_prov`, `nomb_prov`, `dire_prov`, `tele_prov` FROM `proveedores`");
+            PreparedStatement cmd = this.conn.prepareStatement("SELECT * FROM piezas");
             ResultSet rs = cmd.executeQuery();
             while(rs.next())
             {

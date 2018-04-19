@@ -10,6 +10,9 @@
 <%@page import="com.sv.udb.controlador.Piezas_Ctrl"%>
 <%@page import="com.sv.udb.controlador.Proveedores_Ctrl"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
+ <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -43,11 +46,11 @@
                                   <label for="selPiezas">Pieza:</label>
                                   <select class="form-control" id="selPiezas" name="selPiezas">
                                     <%
-                                        for(Piezas temp : new Piezas_Ctrl().consTodo())
+                                        for(Piezas temp1 : new Piezas_Ctrl().consTodo())
                                         {
                                     %>
 
-                                      <option value="<%=temp.getCodigo()%>"><%= temp.getNombre()%></option>
+                                      <option value="<%=temp1.getCodigo()%>"><%= temp1.getNombre()%></option>
                                     <%
                                         }
                                     %>
@@ -89,27 +92,17 @@
                         <div class="panel-heading">La Tabla</div>
                         <div class="panel-body">
                             <form method="POST" action="BodegaServ" name="Tabl">
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>Cons</th>
-                                        <th>Pieza</th>
-                                        <th>Proveedor</th>
-                                        <th>Fecha</th>
-                                    </tr>
-                                    <%
-                                        for(Bodega temp : new Bodega_Ctrl().consTodo())
-                                        {
-                                    %>
-                                        <tr>
-                                            <td><input type="radio" name="codiBRadi" value="<%= temp.getCodigo()%>"/></td>
-                                            <td><%= temp.getCodigo_pieza().getNombre()%></td>
-                                            <td><%= temp.getCodigo_prov().getNombre()%></td>
-                                            <td><%= temp.getFecha()%></td>
-                                        </tr>
-                                    <%
-                                        }
-                                    %>
-                                </table>
+                                <display:table export="true" id="tablaB" name="<%= new Bodega_Ctrl().consTodo()%>">
+                                    <display:column title="Cons">
+                                        <input type="radio" name="codiBRadi" value="${tablaB.codigo}"/>
+                                    </display:column>
+                                    <display:column property="codigo_prov" title="Proveedor" sortable="true"></display:column>
+                                    <display:column property="codigo_pieza" title="Pieza" sortable="true"></display:column>
+                                    <display:column property="cantidad" title="Cantidad" sortable="true"></display:column>
+                                    <display:column title="Fecha">
+                                        <fmt:formatDate type = "date" value = "${tablaB.fecha}" pattern = "yyyy-MM-dd"  />
+                                    </display:column>
+                                </display:table>
                                 <input type="submit" class="btn btn-success" name="btonBodega" value="Consultar"/>
                             </form>
                         </div>
